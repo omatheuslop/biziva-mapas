@@ -66,6 +66,7 @@
 
 <script>
 import MindMap from 'simple-mind-map'
+import { startBiziva } from '../../../biziva/start.js'
 import MiniMap from 'simple-mind-map/src/plugins/MiniMap.js'
 import Watermark from 'simple-mind-map/src/plugins/Watermark.js'
 import KeyboardNavigation from 'simple-mind-map/src/plugins/KeyboardNavigation.js'
@@ -231,6 +232,7 @@ export default {
     showLoading()
     this.getData()
     this.init()
+    this.bizivaCleanup = startBiziva(this.mindMap, this.$el.ownerDocument)
     this.$bus.$on('execCommand', this.execCommand)
     this.$bus.$on('paddingChange', this.onPaddingChange)
     this.$bus.$on('export', this.export)
@@ -247,6 +249,7 @@ export default {
     this.webTip()
   },
   beforeDestroy() {
+    if (this.bizivaCleanup) this.bizivaCleanup()
     this.$bus.$off('execCommand', this.execCommand)
     this.$bus.$off('paddingChange', this.onPaddingChange)
     this.$bus.$off('export', this.export)
